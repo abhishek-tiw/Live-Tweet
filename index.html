@@ -1,0 +1,46 @@
+<!doctype html>
+<html ng-app="twitterApp">
+
+<head>
+    <title>Live Tweets</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        socket.on('tweets', function(msg) {
+            angular.element(document.getElementById('wrap')).scope().print(msg);
+            angular.element(document.getElementById('wrap')).scope().$apply();
+        });
+
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="js/app.js"></script>
+</head>
+
+<body ng-controller="mainController">
+    <div id="wrap" class="container bootstrap snippet">
+        <div class="col-sm-12" ng-repeat="tweet in message | reverse">
+            <div class="panel panel-white post panel-shadow">
+                <div class="post-heading">
+                    <div class="pull-left image">
+                        <img src={{tweet.user.image}} class="img-circle avatar" alt="user profile image">
+                    </div>
+                    <div class="pull-left meta">
+                        <div class="title h5">
+                            <a href="#"><b>{{tweet.user.name}}</b></a> added a tweet.
+                        </div>
+                        <h6 class="text-muted time">{{CurrentDate | date:'hh:mm:ss a'}}</h6>
+                    </div>
+                </div>
+                <div class="post-description">
+                    <p>{{tweet.text}}</p>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
